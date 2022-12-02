@@ -25,12 +25,12 @@ if __name__ == '__main__':
         "C Z": 6 + 1,  # scissors win => rock
     }
 
+    games = (l.strip() for l in open(sys.argv[1]))
     score_1 = 0
     score_2 = 0
-    with open(sys.argv[1]) as f:
-        for l in f:
-            score_1 += possible_games_1[l.strip()]
-            score_2 += possible_games_2[l.strip()]
+    for g in games:
+            score_1 += possible_games_1[g]
+            score_2 += possible_games_2[g]
 
     print("Part 1:", score_1)
     print("Part 2:", score_2)
