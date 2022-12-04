@@ -8,7 +8,7 @@ def priority(l):
         return ord(l) - ord('A') + 27
 
 
-def badItem(r):
+def bad_item(r):
     mid = len(r) // 2
     c1 = set(r[0:mid])
     c2 = set(r[mid:])
@@ -16,7 +16,7 @@ def badItem(r):
     return i.pop()
 
 
-def commonsGenerator(rucksacks):
+def commons_generator(rucksacks):
     commons = set()
     for i, r in enumerate(rucksacks, start=1):
         if len(commons) == 0:
@@ -30,8 +30,8 @@ def commonsGenerator(rucksacks):
 if __name__ == '__main__':
     rucksacks = [l.strip() for l in open(sys.argv[1])]
 
-    badItems = (badItem(r) for r in rucksacks)
+    badItems = (bad_item(r) for r in rucksacks)
     priorities1 = (priority(l) for l in badItems)
-    priorities2 = (priority(l) for l in commonsGenerator(rucksacks))
+    priorities2 = (priority(l) for l in commons_generator(rucksacks))
     print('Part 1: ', sum(priorities1))
     print("Part 2: ", sum(priorities2))
