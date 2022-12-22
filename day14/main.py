@@ -16,11 +16,18 @@ class Map:
             self.ymin = min(self.ymin, min(p[1] for p in w))
             self.xmax = max(self.xmax, max(p[0] for p in w))
             self.ymax = max(self.ymax, max(p[1] for p in w))
-        self.map = [['.' for i in range(self.xmax - self.xmin + 1)]
-                         for j in range(self.ymax - self.ymin + 1)]
+
+        self.H = self.ymax - self.ymin + 2 # +2 for the last rows in part 2
+        # The whole scene can't be wider than its height on each side
+        self.W = 2*self.H + 2
+
+        self.map = [['.' for i in range(self.W + 1)]
+                         for j in range(self.H + 1)]
         for w in walls:
             for i in range(len(w) - 1):
                 self.draw_wall(w[i], w[i+1])
+        for i in range(self.W + 1):
+            self.map[-1][i] = "#"
         self.mark(500, 0, '+')
 
     def draw_wall(self, s, e):
@@ -58,6 +65,12 @@ class Map:
                     return [x, y]
             except IndexError:
                 return None
+
+    def overflow(self, p):
+        if not p:
+            return True
+        return p[0] < self.xmin or p[0] > self.xmax \
+            or p[1] < self.ymin or p[1] > self.ymax
             
 
 if __name__ == '__main__':
@@ -65,9 +78,13 @@ if __name__ == '__main__':
     m = Map(walls)
     #m.print()
     i=0
-    while m.grain():
+    while not m.overflow(m.grain()):
         #m.print()
         i += 1
     print("Part 1:", i)
 
-
+    i += 1 # take the latest grain into account
+    while [500, 0] != m.grain():
+        i += 1
+    i += 1 # take the last grain into account
+    print("Part 2:", i)
